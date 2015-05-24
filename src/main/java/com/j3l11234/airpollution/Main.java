@@ -79,6 +79,7 @@ public class Main extends JMapFrame{
 					"name:String," +   // <- a String attribute
 					"number:Integer"   // a number attribute
 			);
+			//TYPE = createFeatureType();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -172,9 +173,9 @@ public class Main extends JMapFrame{
 			SimpleFeatureSource featureSource = store.getFeatureSource();
 			CachingFeatureSource cache = new CachingFeatureSource(featureSource);
 			
-			Style style2 = createStyle2(featureSource);
+			//Style style2 = createStyle2(featureSource);
 			Style style = SLD.createSimpleStyle(featureSource.getSchema());
-			Layer layer = new FeatureLayer(cache, style2);
+			Layer layer = new FeatureLayer(cache, style);
 			map.layers().add(layer);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -199,8 +200,11 @@ public class Main extends JMapFrame{
 		GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
 		SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(TYPE);
 	
-		double longitude = 116.41;
-		double latitude = 39.97;
+		//double longitude = 116.41;
+		//double latitude = 39.97;
+		double longitude = 112.02;
+		double latitude = 34.28;
+		
 		Coordinate center = new Coordinate(longitude,latitude);
 		String name = "testname";
 		int number = 10;
