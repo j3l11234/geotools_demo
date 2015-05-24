@@ -56,14 +56,15 @@ public class Service {
 //		}
 		
 		
-		for(int i=0;i<coordinateList.size();++i){
-			
-			Coordinate ptc = coordinateList.get(i);
-			RotatePoint ptr = new RotatePoint(ptc.x,ptc.y);
-			ptr.rotate_anticlockwise(anticlock_dadius);
-			ptc.x = ptr.x;
-			ptc.y = ptr.y;
-		}
+//		for(int i=0;i<coordinateList.size();++i){
+//			
+//			Coordinate ptc = coordinateList.get(i);
+//			RotatePoint ptr = new RotatePoint(ptc.x,ptc.y);
+//			ptr.rotate_anticlockwise(anticlock_dadius);
+//			ptc.x = ptr.x;
+//			ptc.y = ptr.y;
+//			System.out.println(ptc.x+","+ptc.y);
+//		}
 		
 		
 		return coordinateList;

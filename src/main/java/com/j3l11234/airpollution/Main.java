@@ -80,6 +80,7 @@ public class Main extends JMapFrame{
 					"name:String," +   // <- a String attribute
 					"number:Integer"   // a number attribute
 			);
+			//TYPE = createFeatureType();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
