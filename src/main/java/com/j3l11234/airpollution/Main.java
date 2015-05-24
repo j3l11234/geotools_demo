@@ -62,6 +62,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
+// 配上洛阳就录像
 
 public class Main extends JMapFrame{
 	static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
@@ -79,7 +80,6 @@ public class Main extends JMapFrame{
 					"name:String," +   // <- a String attribute
 					"number:Integer"   // a number attribute
 			);
-			//TYPE = createFeatureType();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -133,7 +133,15 @@ public class Main extends JMapFrame{
 
 		mntmDataInput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				test2();
+				
+				new Thread(){
+					public void run(){
+						//你想做的事情
+						test2();
+					};
+				}.start();
+
+				
 			}
 		});
 	}
@@ -195,19 +203,28 @@ public class Main extends JMapFrame{
 			return;
 		}
 		
-		List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+		
 
 		GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
 		SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(TYPE);
 	
 		//double longitude = 116.41;
 		//double latitude = 39.97;
-		double longitude = 112.02;
-		double latitude = 34.28;
-		
-		Coordinate center = new Coordinate(longitude,latitude);
+		Coordinate center = new Coordinate(data.density_long,data.density_lati);
 		String name = "testname";
 		int number = 10;
+		
+		
+		Layer last_layer = null;
+		
+		for(int iii = 0;iii<data.density_rt;++iii){
+			
+		if(last_layer!=null){
+			//last_layer.setVisible(false);
+			map.removeLayer(last_layer);
+			//map.layers().clear();
+			System.out.println("remove:"+last_layer);
+		}
 
 		// 构造高斯模型
 		GaussianModel gm = new GaussianModel(	
@@ -222,6 +239,8 @@ public class Main extends JMapFrame{
 		
 		double latitudeRatio = 30.87 * 36*10;
 		double longitudeRatio = 30.87 * Math.cos(2*Math.PI/360*39.9)* 36*10;
+		
+		List<SimpleFeature> features = new ArrayList<SimpleFeature>();
 		for (double i = 5; i < 20; i+=3){
 			// 构造搜寻器
 			Searcher ser = new Searcher(
@@ -241,7 +260,7 @@ public class Main extends JMapFrame{
 			double left = oval.x/longitudeRatio;
 			double top = oval.y/latitudeRatio;
 			
-			List<Coordinate> ovalList = Service.creatOval(a, b, left, top, 100,center);
+			List<Coordinate> ovalList = Service.creatOval(a, b, left, top, 20,center,data.density_awr);
 			Coordinate[] ovalArray = ovalList.toArray(new Coordinate[1]);
 			Polygon polygon = geometryFactory.createPolygon(ovalArray);							
 			featureBuilder.add(polygon);
@@ -251,10 +270,25 @@ public class Main extends JMapFrame{
 			features.add(feature);
 		}
 		
-		addFeatures(features);
+		last_layer = addFeatures(features);
+		System.out.println("addFeatures(features)"+features.size());
+		this.invalidate();
+		
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		data.density += data.density_delt;
+		
+		}
 	}
 	
-	private void addFeatures(List<SimpleFeature> features){
+	private Layer addFeatures(List<SimpleFeature> features){
 		try {
 
 			System.out.println("TYPE:"+TYPE);	
@@ -279,9 +313,10 @@ public class Main extends JMapFrame{
 			Style style = SLD.createSimpleStyle(featureSource.getSchema());
 			Layer layer = new FeatureLayer(featureSource, style);
 			map.layers().add(layer);
-			
+			return layer;
 		} catch (IOException e) {
 			// TODO: handle exception
+			return null;
 		}
 	}
 

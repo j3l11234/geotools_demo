@@ -32,6 +32,14 @@ public class DataDialog extends JDialog {
 
 	private JPanel contentPane;
 	private JTextField textField_density;
+	private JTextField textField_density_delt;
+	private JTextField textField_density_rt;
+	
+	private JTextField textField_density_long;
+	private JTextField textField_density_lati;
+	private JTextField textField_density_awr;
+	
+	
 	private JTextField textField_speed;
 	private JTextField textField_sigma_y_gama;
 	private JTextField textField_sigma_y_a;
@@ -72,6 +80,28 @@ public class DataDialog extends JDialog {
 		
 		initDialog();
 		initHandle();
+	}
+	
+	private void addItem(JTextField jtf,String title,String defaultvalsue,int index){
+		JLabel lbl_1_rt = new JLabel(title);
+		GridBagConstraints gbc_lbl_1_rt = new GridBagConstraints();
+		gbc_lbl_1_rt.insets = new Insets(0, 0, 5, 5);
+		gbc_lbl_1_rt.gridx = 0;
+		gbc_lbl_1_rt.gridy = index;
+		panel.add(lbl_1_rt, gbc_lbl_1_rt);
+		
+		//jtf = new JTextField();
+		jtf.setText(defaultvalsue);
+		GridBagConstraints gbc_textField_density_rt = new GridBagConstraints();
+		gbc_textField_density_rt.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_density_rt.anchor = GridBagConstraints.NORTH;
+		gbc_textField_density_rt.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_density_rt.gridx = 1;
+		gbc_textField_density_rt.gridy = index;
+		panel.add(jtf, gbc_textField_density_rt);
+		jtf.setColumns(10);
+		
+		
 	}
 	
 	private void initDialog(){
@@ -119,6 +149,10 @@ public class DataDialog extends JDialog {
 		panel.add(textField_density, gbc_textField_density);
 		textField_density.setColumns(10);
 		
+		
+		
+		
+		
 		JLabel lbl_2 = new JLabel("风速  (m/s)");
 		GridBagConstraints gbc_lbl_2 = new GridBagConstraints();
 		gbc_lbl_2.insets = new Insets(0, 0, 5, 5);
@@ -154,6 +188,52 @@ public class DataDialog extends JDialog {
 		gbc_textField_height.gridy = 2;
 		panel.add(textField_height, gbc_textField_height);
 		textField_height.setColumns(10);
+		
+		
+		JLabel lbl_1_delt = new JLabel("源强变化率  (ug/s)");
+		GridBagConstraints gbc_lbl_1_delt = new GridBagConstraints();
+		gbc_lbl_1_delt.insets = new Insets(0, 0, 5, 5);
+		gbc_lbl_1_delt.gridx = 0;
+		gbc_lbl_1_delt.gridy = 3;
+		panel.add(lbl_1_delt, gbc_lbl_1_delt);
+		
+		textField_density_delt = new JTextField();
+		textField_density_delt.setText("20000");
+		GridBagConstraints gbc_textField_density_delt = new GridBagConstraints();
+		gbc_textField_density_delt.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_density_delt.anchor = GridBagConstraints.NORTH;
+		gbc_textField_density_delt.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_density_delt.gridx = 1;
+		gbc_textField_density_delt.gridy = 3;
+		panel.add(textField_density_delt, gbc_textField_density_delt);
+		textField_density_delt.setColumns(10);
+		
+		JLabel lbl_1_rt = new JLabel("刷新次数");
+		GridBagConstraints gbc_lbl_1_rt = new GridBagConstraints();
+		gbc_lbl_1_rt.insets = new Insets(0, 0, 5, 5);
+		gbc_lbl_1_rt.gridx = 0;
+		gbc_lbl_1_rt.gridy = 4;
+		panel.add(lbl_1_rt, gbc_lbl_1_rt);
+		
+		textField_density_rt = new JTextField();
+		textField_density_rt.setText("5");
+		GridBagConstraints gbc_textField_density_rt = new GridBagConstraints();
+		gbc_textField_density_rt.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_density_rt.anchor = GridBagConstraints.NORTH;
+		gbc_textField_density_rt.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_density_rt.gridx = 1;
+		gbc_textField_density_rt.gridy = 4;
+		panel.add(textField_density_rt, gbc_textField_density_rt);
+		textField_density_rt.setColumns(10);
+		
+
+		textField_density_long = new JTextField();
+		textField_density_lati = new JTextField();
+		textField_density_awr = new JTextField();
+		addItem(textField_density_long,"污染源经度","111.57",5);
+		addItem(textField_density_lati,"污染源维度","34.16",6);
+		addItem(textField_density_awr,"东向逆时针方向","0.52333",7);
+		
 		
 		panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "扩散参数", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -262,12 +342,18 @@ public class DataDialog extends JDialog {
 				try {
 					data = new MyData();
 					data.density = Double.parseDouble(textField_density.getText());
+					data.density_delt = Double.parseDouble(textField_density_delt.getText());
+					data.density_rt = Double.parseDouble(textField_density_rt.getText());
 					data.speed = Double.parseDouble(textField_speed.getText());
 					data.height = Double.parseDouble(textField_height.getText());
 					data.sigma_y_gama = Double.parseDouble(textField_sigma_y_gama.getText());
 					data.sigma_y_a = Double.parseDouble(textField_sigma_y_a.getText());
 					data.sigma_z_gama = Double.parseDouble(textField_sigma_z_gama.getText());
 					data.sigma_z_a = Double.parseDouble(textField_sigma_z_a.getText());
+					
+					data.density_long = Double.parseDouble(textField_density_long.getText());
+					data.density_lati = Double.parseDouble(textField_density_lati.getText());
+					data.density_awr = Double.parseDouble(textField_density_awr.getText());
 					
 					DataDialog.this.dispose();
 				} catch (NumberFormatException e) {
@@ -289,6 +375,11 @@ public class DataDialog extends JDialog {
 	
 	public class MyData{
 		public double density;
+		public double density_delt;
+		public double density_rt;
+		public double density_lati;
+		public double density_long;
+		public double density_awr;// antiwise radius
 		public double speed;
 		public double height;
 		public double sigma_y_gama;

@@ -5,10 +5,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.j3l11234.tutorial.math.RotatePoint;
 import com.vividsolutions.jts.geom.Coordinate;
 
 public class Service {
-	public static List<Coordinate> creatOval(double a, double b, double left, double top, int accuracy,Coordinate centre) {
+	public static List<Coordinate> creatOval(double a, double b, double left, double top, int accuracy,Coordinate centre,double anticlock_dadius) {
 		left = left + centre.x;
 		top = top + centre.y;
 		double axa = a*a;
@@ -53,6 +54,17 @@ public class Service {
 //			Coordinate point = coordinateList.get(i);
 //			System.out.println(point.x + "," + point.y);
 //		}
+		
+		
+		for(int i=0;i<coordinateList.size();++i){
+			
+			Coordinate ptc = coordinateList.get(i);
+			RotatePoint ptr = new RotatePoint(ptc.x,ptc.y);
+			ptr.rotate_anticlockwise(anticlock_dadius);
+			ptc.x = ptr.x;
+			ptc.y = ptr.y;
+		}
+		
 		
 		return coordinateList;
 	}
